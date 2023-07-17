@@ -441,7 +441,7 @@ class ProblemTracker:
                 print(f" ![](https://progress-bar.dev/{counter}/?scale={total}&suffix=/{total}) |", end="")
             print()
         print()
-        print("Made with the help of ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)")
+        print("Made with ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)")
 
     def createReadme(self):
         with open(self.output_dir_path, 'w') as f:
@@ -488,7 +488,7 @@ class ProblemTracker:
                     f.write(f" ![](https://progress-bar.dev/{counter}/?scale={total}&suffix=/{total}) |")
                 f.write("\n")
             f.write("\n")
-            f.write("Made with  ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)\n")
+            f.write("Made with ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)\n")
             
 pt = ProblemTracker()
 

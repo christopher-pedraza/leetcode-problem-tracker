@@ -1,0 +1,14 @@
+
+longest consecutive sequence
+contains duplicate
+valid parentheses
+valid palindrome
+two sum
+valid anagram
+two sum ii input array is sorted
+top k frequent elements
+group anagrams
+product of array except self
+container with most water
+valid sudoku
+encode and decode strings

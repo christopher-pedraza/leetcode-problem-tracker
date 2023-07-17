@@ -87,6 +87,11 @@ class ProblemTracker:
                 # Stores the dictionary of problems on each list of problems
                 self.problems_lists[path] = temp_dict
 
+        # Reads the text file containing the output file path and replaces
+        # the value with the content of the file
+        with open(self.output_dir_path, 'r') as f:
+            self.output_dir_path = f.readline()
+
 
     # Constructor
     def __init__(self):
@@ -101,10 +106,10 @@ class ProblemTracker:
         self.package_dir = os.getcwd()
         # Path to the problems directory
         self.problems_dir_path = os.path.join(self.package_dir, 'Problems\\')
-        # Path to the configs directory
-        self.config_dir_path = os.path.join(self.package_dir, 'Config\\')
         # Path to the solved file
-        self.solved_dir_path = os.path.join(self.config_dir_path, 'Solved.txt')
+        self.solved_dir_path = os.path.join(self.package_dir, 'Config\\Solved.txt')
+        # Path to the file with the output path
+        self.output_dir_path = os.path.join(self.package_dir, 'Config\\Output_Path.txt')
         # Path to the lists of problems
         self.lists_dir_path = os.path.join(self.package_dir, 'Lists\\')
 
@@ -439,7 +444,7 @@ class ProblemTracker:
         print("Made with the help of ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)")
 
     def createReadme(self):
-        with open("README.md", 'w') as f:
+        with open(self.output_dir_path, 'w') as f:
             f.write("![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)\n")
             f.write("\n")
             f.write("# LeetCodeProblems\n")

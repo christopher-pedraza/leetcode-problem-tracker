@@ -398,7 +398,7 @@ class ProblemTracker:
         return {'solved':solved, 'total': total}
 
     def displayReadme(self):
-        print("![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)")
+        print("![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/christopher-pedraza/LeetCodeProblems)")
         print()
         print("# LeetCodeProblems")
         print()
@@ -445,7 +445,7 @@ class ProblemTracker:
 
     def createReadme(self):
         with open(self.output_dir_path, 'w') as f:
-            f.write("![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)\n")
+            f.write("![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/christopher-pedraza/LeetCodeProblems)\n")
             f.write("\n")
             f.write("# LeetCodeProblems\n")
             f.write("\n")

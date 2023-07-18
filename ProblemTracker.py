@@ -424,7 +424,7 @@ class ProblemTracker:
 
         # Iterate over the categories of the problems
         for category in self.problems:
-            link = "https://github.com/christopher-pedraza/LeetCodeProblems/tree/0f15be41e73659504c2f844501cd6ae472f6cd2c/" + category
+            link = "https://github.com/christopher-pedraza/LeetCodeProblems/tree/main/" + category
             # Replace characters that usually are replaced in links
             link = link.replace(" ", "%20")
             link = link.replace("&", "%26")
@@ -471,7 +471,7 @@ class ProblemTracker:
 
             # Iterate over the categories of the problems
             for category in self.problems:
-                link = "https://github.com/christopher-pedraza/LeetCodeProblems/tree/0f15be41e73659504c2f844501cd6ae472f6cd2c/" + category
+                link = "https://github.com/christopher-pedraza/LeetCodeProblems/tree/main/" + category
                 # Replace characters that usually are replaced in links
                 link = link.replace(" ", "%20")
                 link = link.replace("&", "%26")

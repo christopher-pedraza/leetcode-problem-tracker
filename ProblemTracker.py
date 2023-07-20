@@ -92,6 +92,11 @@ class ProblemTracker:
         with open(self.output_dir_path, 'r') as f:
             self.output_dir_path = f.readline()
 
+        # Reads the text file containing the github profile and repository
+        with open(self.github_dir_path, 'r') as f:
+            self.github_profile = f.readline()
+            self.github_repo = f.readline()
+
 
     # Constructor
     def __init__(self):
@@ -101,6 +106,8 @@ class ProblemTracker:
         self.solved_problems = {}
         self.solved_problems_set = set()
         self.problems_lists = {}
+        self.github_profile = ""
+        self.github_repo = ""
 
         # Path to the directory of the project
         self.package_dir = os.getcwd()
@@ -110,6 +117,8 @@ class ProblemTracker:
         self.solved_dir_path = os.path.join(self.package_dir, 'Config\\Solved.txt')
         # Path to the file with the output path
         self.output_dir_path = os.path.join(self.package_dir, 'Config\\Output_Path.txt')
+        # Path to the file with the github repo
+        self.github_dir_path = os.path.join(self.package_dir, 'Config\\Github.txt')
         # Path to the lists of problems
         self.lists_dir_path = os.path.join(self.package_dir, 'Lists\\')
 
@@ -398,7 +407,7 @@ class ProblemTracker:
         return {'solved':solved, 'total': total}
 
     def displayReadme(self):
-        print("![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/christopher-pedraza/LeetCodeProblems)")
+        print(f"![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/{self.github_profile}/{self.github_repo})")
         print()
         print("# LeetCodeProblems")
         print()
@@ -424,7 +433,7 @@ class ProblemTracker:
 
         # Iterate over the categories of the problems
         for category in self.problems:
-            link = "https://github.com/christopher-pedraza/LeetCodeProblems/tree/main/" + category
+            link = f"https://github.com/{self.github_profile}/{self.github_repo}/tree/main/{category}"
             # Replace characters that usually are replaced in links
             link = link.replace(" ", "%20")
             link = link.replace("&", "%26")
@@ -445,7 +454,7 @@ class ProblemTracker:
 
     def createReadme(self):
         with open(self.output_dir_path, 'w') as f:
-            f.write("![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/christopher-pedraza/LeetCodeProblems)\n")
+            f.write(f"![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/{self.github_profile}/{self.github_repo})\n")
             f.write("\n")
             f.write("# LeetCodeProblems\n")
             f.write("\n")
@@ -471,7 +480,7 @@ class ProblemTracker:
 
             # Iterate over the categories of the problems
             for category in self.problems:
-                link = "https://github.com/christopher-pedraza/LeetCodeProblems/tree/main/" + category
+                link = f"https://github.com/{self.github_profile}/{self.github_repo}/tree/main/{category}"
                 # Replace characters that usually are replaced in links
                 link = link.replace(" ", "%20")
                 link = link.replace("&", "%26")

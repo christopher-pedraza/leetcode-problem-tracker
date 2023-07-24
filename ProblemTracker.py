@@ -94,8 +94,9 @@ class ProblemTracker:
 
         # Reads the text file containing the github profile and repository
         with open(self.github_dir_path, 'r') as f:
-            self.github_profile = f.readline()
-            self.github_repo = f.readline()
+            # Strip the read line to remove \n
+            self.github_profile = f.readline().strip()
+            self.github_repo = f.readline().strip()
 
 
     # Constructor

@@ -1,4 +1,5 @@
 import os
+import configparser
 
 class ProblemTracker:
     # Read the text files to get the problem names and categories
@@ -87,17 +88,14 @@ class ProblemTracker:
                 # Stores the dictionary of problems on each list of problems
                 self.problems_lists[path] = temp_dict
 
-        # Reads the text file containing the output file path and replaces
-        # the value with the content of the file
-        with open(self.output_dir_path, 'r') as f:
-            self.output_dir_path = f.readline()
-
-        # Reads the text file containing the github profile and repository
-        with open(self.github_dir_path, 'r') as f:
-            # Strip the read line to remove \n
-            self.github_profile = f.readline().strip()
-            self.github_repo = f.readline().strip()
-
+        # Read the config file
+        self.config = configparser.ConfigParser()
+        self.config.read(self.config_dir_path)
+        self.github_profile = self.config.get('GITHUB', 'profile')
+        self.github_repo = self.config.get('GITHUB', 'repo_name')
+        self.output_dir_path = self.config.get('DIR_PATHS', 'output_dir')
+        self.auto_push = True if self.config.get('MISC', 'auto_push').lower() == "true" else False
+        self.repo_dir += self.config.get('DIR_PATHS', 'repo_dir')
 
     # Constructor
     def __init__(self):
@@ -109,6 +107,8 @@ class ProblemTracker:
         self.problems_lists = {}
         self.github_profile = ""
         self.github_repo = ""
+        self.auto_push = False
+        self.config = None
 
         # Path to the directory of the project
         self.package_dir = os.getcwd()
@@ -116,12 +116,12 @@ class ProblemTracker:
         self.problems_dir_path = os.path.join(self.package_dir, 'Problems\\')
         # Path to the solved file
         self.solved_dir_path = os.path.join(self.package_dir, 'Config\\Solved.txt')
-        # Path to the file with the output path
-        self.output_dir_path = os.path.join(self.package_dir, 'Config\\Output_Path.txt')
-        # Path to the file with the github repo
-        self.github_dir_path = os.path.join(self.package_dir, 'Config\\Github.txt')
+        # Path to config file
+        self.config_dir_path = os.path.join(self.package_dir, 'Config\\config.cfg')
         # Path to the lists of problems
         self.lists_dir_path = os.path.join(self.package_dir, 'Lists\\')
+        # Path to the local repository (will append to it from config file)
+        self.repo_dir = self.package_dir
 
         # Read the files
         self.readFiles()
@@ -145,7 +145,25 @@ class ProblemTracker:
         # after it
         if doPrint:
             print('\033[0m', end="")
-        return '\x1b[1;32;40m'
+        return '\033[0m'
+
+    # Functions to assign cyan color when printing to the console
+    def cyan(self, doPrint=True):
+        # It always return the value in case you want to use it as an
+        # intext modifier, but can also print it so it affects all
+        # after it
+        if doPrint:
+            print('\033[96m', end="")
+        return '\033[96m'
+
+    # Functions to assign red color when printing to the console
+    def red(self, doPrint=True):
+        # It always return the value in case you want to use it as an
+        # intext modifier, but can also print it so it affects all
+        # after it
+        if doPrint:
+            print('\033[91m', end="")
+        return '\033[91m'
 
     # Print the problem with certain format
     def printProblem(self, i, p, bullet):
@@ -326,8 +344,12 @@ class ProblemTracker:
             # Iterate over the set of solved problems rewriting the
             # solved problems' file
             with open(self.solved_dir_path, 'w') as f:
-                for p in self.solved_problems_set:
-                    f.write(f"{p}\n")
+                for i, p in enumerate(self.solved_problems_set):
+                    f.write(f"{p}")
+                    # To prevent writing an extra line jump at the end
+                    # of the file
+                    if i != len(self.solved_problems_set)-1:
+                        f.write("\n")
 
     def markAsSolved(self):
         # Get the indexes of the categories that have at least one problem
@@ -362,7 +384,20 @@ class ProblemTracker:
         ans = input(f'\nAre you sure you want to mark as solved the problem: "{p[p_index-1]}" (y/n): ')
         # If they accept, mark the problem as solved
         if ans.lower() in ["yes", "y"]:
-           self.addSolved(p[p_index-1], c_index)
+            self.addSolved(p[p_index-1], c_index)
+
+            if self.auto_push:
+                os.system('cls')
+                print(f'{self.cyan(False)}Updating README.md{self.normal(False)}')
+                self.createReadme()
+                print(f'{self.cyan(False)}Pushing changes to remote repository{self.normal(False)}')
+                print(f'{self.cyan(False)}git -C "{self.repo_dir}" add .{self.normal(False)}')
+                os.system(f'git -C "{self.repo_dir}" add .')
+                print(f'{self.cyan(False)}git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"{self.normal(False)}')
+                os.system(f'git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"')
+                print(f'{self.cyan(False)}git -C "{self.repo_dir}" push origin main{self.normal(False)}')
+                os.system(f'git -C "{self.repo_dir}" push origin main')
+                print()
 
     def markAsUnsolved(self):
         # Get the indexes of the categories that have no solved problem and
@@ -395,7 +430,22 @@ class ProblemTracker:
         ans = input(f'\nAre you sure you want to mark as unsolved the problem: "{p[p_index-1]}" (y/n): ')
         # If they accept, mark the problem as solved
         if ans.lower() in ["yes", "y"]:
-           self.removeSolved(p[p_index-1], c_index)
+            self.removeSolved(p[p_index-1], c_index)
+
+            if self.auto_push:
+                os.system('cls')
+                print(f'{self.cyan(False)}Updating README.md{self.normal(False)}')
+                self.createReadme()
+                print(f'{self.cyan(False)}Pushing changes to remote repository{self.normal(False)}')
+                print(f'{self.cyan(False)}cd {self.repo_dir}{self.normal(False)}')
+                os.system(f'cd {self.repo_dir}')
+                print(f'{self.cyan(False)}git add .{self.normal(False)}')
+                os.system('git add .')
+                print(f'{self.cyan(False)}git commit -m "Add \'{p[p_index-1]}\' solution"{self.normal(False)}')
+                os.system(f'git commit -m "Add \'{p[p_index-1]}\' solution"')
+                print(f'{self.cyan(False)}git push origin main{self.normal(False)}')
+                os.system('git push origin main')
+                print()
 
     def getSolvedProblemsByList(self, list_name):
         solved = 0
@@ -500,15 +550,31 @@ class ProblemTracker:
             f.write("\n")
             f.write("Made with ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)\n")
             
+    def toggleAutoPush(self):
+        if self.auto_push:
+            print(f'Set Auto Push to {self.red()}False{self.normal()}')
+            self.config.set('MISC', 'auto_push','FALSE')
+            self.auto_push = False
+        else:
+            print(f'Set Auto Push to {self.green()}True{self.normal()}')
+            self.config.set('MISC', 'auto_push','TRUE')
+            self.auto_push = True
+        print()
+
+        with open(self.config_dir_path, 'w') as configfile:
+            self.config.write(configfile)
+
+
 pt = ProblemTracker()
 
 while True:
-    print("1. Display all problems")
-    print("2. Display solved problems")
-    print("3. Mark problem as solved")
-    print("4. Mark problem as unsolved")
-    print("5. Print README.md content")
-    print("6. Update README.md file")
+    print("1. Mark problem as solved")
+    print("2. Mark problem as unsolved")
+    print("3. Update README.md file")
+    print("4. Display all problems")
+    print("5. Display solved problems")
+    print("6. Print README.md content")
+    print("7. Toggle auto push to remote repository")
     print("0. Exit")
 
     op = input("Option: ")
@@ -517,14 +583,16 @@ while True:
     if op == '0':
         break
     elif op == '1':
-        pt.displayAllProblems()
-    elif op == '2':
-        pt.displaySolved()
-    elif op == '3':
         pt.markAsSolved()
-    elif op == '4':
+    elif op == '2':
         pt.markAsUnsolved()
-    elif op == '5':
-        pt.displayReadme()
-    elif op == '6':
+    elif op == '3':
         pt.createReadme()
+    elif op == '4':
+        pt.displayAllProblems()
+    elif op == '5':
+        pt.displaySolved()
+    elif op == '6':
+        pt.displayReadme()
+    elif op == '7':
+        pt.toggleAutoPush()

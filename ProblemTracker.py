@@ -1,11 +1,12 @@
 import os
 import configparser
 
+
 class ProblemTracker:
     # Read the text files to get the problem names and categories
     def readFiles(self):
-        # Open the text file with the solved problems' names 
-        with open(self.solved_dir_path, 'r') as f:
+        # Open the text file with the solved problems' names
+        with open(self.solved_dir_path, "r") as f:
             # Add to the set of solved problems each of the read lines
             lines = f.readlines()
             for l in lines:
@@ -27,7 +28,7 @@ class ProblemTracker:
         for category in self.problems_categories:
             # For each category, we open the text file and store the problem
             # names
-            with open(self.problems_dir_path + category + ".txt", 'r') as f:
+            with open(self.problems_dir_path + category + ".txt", "r") as f:
                 # Read the lines and store them as a list of strings
                 lines = f.readlines()
 
@@ -35,7 +36,7 @@ class ProblemTracker:
                 # to strip each string
                 for l in lines:
                     # Get the list from the dict of problems (if the list still
-                    # doesn't exist, we get an empty list) 
+                    # doesn't exist, we get an empty list)
                     lst = self.problems.get(category, [])
                     # Append to the list the stripped string
                     lst.append(l.strip())
@@ -44,7 +45,7 @@ class ProblemTracker:
 
                     if l.strip().lower() in self.solved_problems_set:
                         # Get the list from the dict of solved problems (if the
-                        # list still doesn't exist, we get an empty list) 
+                        # list still doesn't exist, we get an empty list)
                         lst = self.solved_problems.get(category, [])
                         # Append to the list the stripped string
                         lst.append(l.strip())
@@ -70,7 +71,7 @@ class ProblemTracker:
                 if os.path.isfile(text_file_path):
                     # For each category, we open the text file and store the problem
                     # names
-                    with open(text_file_path, 'r') as f:
+                    with open(text_file_path, "r") as f:
                         # Read the lines and store them as a list of strings
                         lines = f.readlines()
 
@@ -78,7 +79,7 @@ class ProblemTracker:
                         # to strip each string
                         for l in lines:
                             # Get the list from the dict of problems (if the list still
-                            # doesn't exist, we get an empty list) 
+                            # doesn't exist, we get an empty list)
                             lst = temp_dict.get(category, [])
                             # Append to the list the stripped string
                             lst.append(l.strip())
@@ -91,11 +92,13 @@ class ProblemTracker:
         # Read the config file
         self.config = configparser.ConfigParser()
         self.config.read(self.config_dir_path)
-        self.github_profile = self.config.get('GITHUB', 'profile')
-        self.github_repo = self.config.get('GITHUB', 'repo_name')
-        self.output_dir_path = self.config.get('DIR_PATHS', 'output_dir')
-        self.auto_push = True if self.config.get('MISC', 'auto_push').lower() == "true" else False
-        self.repo_dir += self.config.get('DIR_PATHS', 'repo_dir')
+        self.github_profile = self.config.get("GITHUB", "profile")
+        self.github_repo = self.config.get("GITHUB", "repo_name")
+        self.output_dir_path = self.config.get("DIR_PATHS", "output_dir")
+        self.auto_push = (
+            True if self.config.get("MISC", "auto_push").lower() == "true" else False
+        )
+        self.repo_dir += self.config.get("DIR_PATHS", "repo_dir")
 
     # Constructor
     def __init__(self):
@@ -113,13 +116,13 @@ class ProblemTracker:
         # Path to the directory of the project
         self.package_dir = os.getcwd()
         # Path to the problems directory
-        self.problems_dir_path = os.path.join(self.package_dir, 'Problems\\')
+        self.problems_dir_path = os.path.join(self.package_dir, "Problems\\")
         # Path to the solved file
-        self.solved_dir_path = os.path.join(self.package_dir, 'Config\\Solved.txt')
+        self.solved_dir_path = os.path.join(self.package_dir, "Config\\Solved.txt")
         # Path to config file
-        self.config_dir_path = os.path.join(self.package_dir, 'Config\\config.cfg')
+        self.config_dir_path = os.path.join(self.package_dir, "Config\\config.cfg")
         # Path to the lists of problems
-        self.lists_dir_path = os.path.join(self.package_dir, 'Lists\\')
+        self.lists_dir_path = os.path.join(self.package_dir, "Lists\\")
         # Path to the local repository (will append to it from config file)
         self.repo_dir = self.package_dir
 
@@ -135,8 +138,8 @@ class ProblemTracker:
         # intext modifier, but can also print it so it affects all
         # after it
         if doPrint:
-            print('\x1b[1;32;40m', end="")
-        return '\x1b[1;32;40m'
+            print("\x1b[1;32;40m", end="")
+        return "\x1b[1;32;40m"
 
     # Functions to assign white/black color when printing to the console
     def normal(self, doPrint=True):
@@ -144,8 +147,8 @@ class ProblemTracker:
         # intext modifier, but can also print it so it affects all
         # after it
         if doPrint:
-            print('\033[0m', end="")
-        return '\033[0m'
+            print("\033[0m", end="")
+        return "\033[0m"
 
     # Functions to assign cyan color when printing to the console
     def cyan(self, doPrint=True):
@@ -153,8 +156,8 @@ class ProblemTracker:
         # intext modifier, but can also print it so it affects all
         # after it
         if doPrint:
-            print('\033[96m', end="")
-        return '\033[96m'
+            print("\033[96m", end="")
+        return "\033[96m"
 
     # Functions to assign red color when printing to the console
     def red(self, doPrint=True):
@@ -162,8 +165,8 @@ class ProblemTracker:
         # intext modifier, but can also print it so it affects all
         # after it
         if doPrint:
-            print('\033[91m', end="")
-        return '\033[91m'
+            print("\033[91m", end="")
+        return "\033[91m"
 
     # Print the problem with certain format
     def printProblem(self, i, p, bullet):
@@ -174,34 +177,36 @@ class ProblemTracker:
         # Each item of the problems contains the category and a list with
         # the problem names in the category.
         for category, p in self.problems.items():
-                # Print the category
-                print(f'{category} [{len(self.solved_problems.get(category, []))}/{len(p)}]')
-                # Iterate over the list with the problems' names
-                for i, p in enumerate(p):
-                    # If the problems is already solved, print it in green
-                    if p.lower() in self.solved_problems_set:
-                        self.green()
-                        self.printProblem(i, p, "\t")
-                        self.normal()
-                    # If not, print it normally
-                    else:
-                        self.printProblem(i, p, "\t")
-                # Space between each category
-                print()
+            # Print the category
+            print(
+                f"{category} [{len(self.solved_problems.get(category, []))}/{len(p)}]"
+            )
+            # Iterate over the list with the problems' names
+            for i, p in enumerate(p):
+                # If the problems is already solved, print it in green
+                if p.lower() in self.solved_problems_set:
+                    self.green()
+                    self.printProblem(i, p, "\t")
+                    self.normal()
+                # If not, print it normally
+                else:
+                    self.printProblem(i, p, "\t")
+            # Space between each category
+            print()
 
     # Displays only the solved problems without any color
     def displaySolved(self):
         # Each item of the problems contains the category and a list with
         # the problem names in the category.
         for category, p in self.solved_problems.items():
-                # Print the category
-                print(f'{category} [{len(p)}/{len(self.problems.get(category, []))}]')
-                # Iterate over the list with the problems' names
-                for i, p in enumerate(p):
-                    # Print each problem with a certain format
-                    self.printProblem(i, p, "\t")
-                # Space between each category
-                print()
+            # Print the category
+            print(f"{category} [{len(p)}/{len(self.problems.get(category, []))}]")
+            # Iterate over the list with the problems' names
+            for i, p in enumerate(p):
+                # Print each problem with a certain format
+                self.printProblem(i, p, "\t")
+            # Space between each category
+            print()
 
     # Display the category names which have at least one problem solved
     def displaySolvedCategories(self):
@@ -212,19 +217,19 @@ class ProblemTracker:
         # at least one problem solved, if so, print the category and break
         # the loop
         for category, p in self.problems.items():
-                # Check the problems in the category
-                for i, p in enumerate(p):
-                    # If the problem is solved
-                    if p.lower() in self.solved_problems_set:
-                        # Print the category and add the index to the set
-                        print(category)
-                        # For the index, we take the first 2 chars convert
-                        # them to integer and add it to the set
-                        categories_index.add(int(category[:2]))
-                        # Break the cycle so we can check another category
-                        # and don't print the same category more than once
-                        break
-        # Return the set with the indexes 
+            # Check the problems in the category
+            for i, p in enumerate(p):
+                # If the problem is solved
+                if p.lower() in self.solved_problems_set:
+                    # Print the category and add the index to the set
+                    print(category)
+                    # For the index, we take the first 2 chars convert
+                    # them to integer and add it to the set
+                    categories_index.add(int(category[:2]))
+                    # Break the cycle so we can check another category
+                    # and don't print the same category more than once
+                    break
+        # Return the set with the indexes
         return categories_index
 
     # Display the category names which have no problems solved
@@ -248,7 +253,7 @@ class ProblemTracker:
                     # Break the cycle so we can check another category
                     # and don't print the same category more than once
                     break
-        # Return the set with the indexes 
+        # Return the set with the indexes
         return categories_index
 
     # Gets the category name by the index
@@ -270,7 +275,7 @@ class ProblemTracker:
         p = self.problems.get(self.getCategoryName(categoryIndex))
 
         for problem in p:
-            #If the problem has been solved, append it
+            # If the problem has been solved, append it
             if problem.lower() in self.solved_problems_set:
                 solved.append(problem)
         # Return the list with the solved problems
@@ -281,12 +286,12 @@ class ProblemTracker:
     def getUnsolvedProblemsByCategory(self, categoryIndex):
         # Stores the problems that meet the condition
         unsolved_problems = []
-        
+
         # Get the problems from the dictionary
         p = self.problems.get(self.getCategoryName(categoryIndex))
 
         for problem in p:
-            #If the problem hasn't been solved, append it
+            # If the problem hasn't been solved, append it
             if problem.lower() not in self.solved_problems_set:
                 unsolved_problems.append(problem)
         # Return the list with the solved problems
@@ -315,7 +320,7 @@ class ProblemTracker:
             # Add the problem name to the set
             self.solved_problems_set.add(problem.lower())
             # Append the problem to the file
-            with open(self.solved_dir_path, 'a') as f:
+            with open(self.solved_dir_path, "a") as f:
                 f.write(f"\n{problem.lower()}")
 
     # Removes a problem from the set of solved problems and updates
@@ -343,12 +348,12 @@ class ProblemTracker:
             self.solved_problems_set.remove(problem.lower())
             # Iterate over the set of solved problems rewriting the
             # solved problems' file
-            with open(self.solved_dir_path, 'w') as f:
+            with open(self.solved_dir_path, "w") as f:
                 for i, p in enumerate(self.solved_problems_set):
                     f.write(f"{p}")
                     # To prevent writing an extra line jump at the end
                     # of the file
-                    if i != len(self.solved_problems_set)-1:
+                    if i != len(self.solved_problems_set) - 1:
                         f.write("\n")
 
     def markAsSolved(self):
@@ -363,7 +368,7 @@ class ProblemTracker:
         # included in the available categories. If not, clear the console
         # and return
         if c_index == 0 or c_index not in categories_index:
-            os.system('cls')
+            os.system("cls")
             return
 
         # Get in a list the problems that haven't been solved in the specified
@@ -377,25 +382,40 @@ class ProblemTracker:
         # included in the available problems. If not, clear the console
         # and return
         if p_index <= 0 or p_index > len(p):
-            os.system('cls')
+            os.system("cls")
             return
 
         # Ask for a confirmation
-        ans = input(f'\nAre you sure you want to mark as solved the problem: "{p[p_index-1]}" (y/n): ')
+        ans = input(
+            f'\nAre you sure you want to mark as solved the problem: "{p[p_index-1]}" (y/n): '
+        )
         # If they accept, mark the problem as solved
         if ans.lower() in ["yes", "y"]:
-            self.addSolved(p[p_index-1], c_index)
+            self.addSolved(p[p_index - 1], c_index)
 
             if self.auto_push:
-                os.system('cls')
-                print(f'{self.cyan(False)}Updating README.md{self.normal(False)}')
+                os.system("cls")
+                print(f"{self.cyan(False)}Updating README.md{self.normal(False)}")
                 self.createReadme()
-                print(f'{self.cyan(False)}Pushing changes to remote repository{self.normal(False)}')
-                print(f'{self.cyan(False)}git -C "{self.repo_dir}" add .{self.normal(False)}')
+                print()
+                print(
+                    f"{self.cyan(False)}Pushing changes to remote repository{self.normal(False)}"
+                )
+                print(
+                    f'{self.cyan(False)}git -C "{self.repo_dir}" add .{self.normal(False)}'
+                )
                 os.system(f'git -C "{self.repo_dir}" add .')
-                print(f'{self.cyan(False)}git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"{self.normal(False)}')
-                os.system(f'git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"')
-                print(f'{self.cyan(False)}git -C "{self.repo_dir}" push origin main{self.normal(False)}')
+                print()
+                print(
+                    f'{self.cyan(False)}git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"{self.normal(False)}'
+                )
+                os.system(
+                    f'git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"'
+                )
+                print()
+                print(
+                    f'{self.cyan(False)}git -C "{self.repo_dir}" push origin main{self.normal(False)}'
+                )
                 os.system(f'git -C "{self.repo_dir}" push origin main')
                 print()
 
@@ -409,7 +429,7 @@ class ProblemTracker:
         # included in the available categories. If not, clear the console
         # and return
         if c_index == 0 or c_index not in categories_index:
-            os.system('cls')
+            os.system("cls")
             return
 
         # Get in a list the problems that haven't been solved in the specified
@@ -423,28 +443,41 @@ class ProblemTracker:
         # included in the available problems. If not, clear the console
         # and return
         if p_index <= 0 or p_index > len(p):
-            os.system('cls')
+            os.system("cls")
             return
 
         # Ask for a confirmation
-        ans = input(f'\nAre you sure you want to mark as unsolved the problem: "{p[p_index-1]}" (y/n): ')
+        ans = input(
+            f'\nAre you sure you want to mark as unsolved the problem: "{p[p_index-1]}" (y/n): '
+        )
         # If they accept, mark the problem as solved
         if ans.lower() in ["yes", "y"]:
-            self.removeSolved(p[p_index-1], c_index)
+            self.removeSolved(p[p_index - 1], c_index)
 
             if self.auto_push:
-                os.system('cls')
-                print(f'{self.cyan(False)}Updating README.md{self.normal(False)}')
+                os.system("cls")
+                print(f"{self.cyan(False)}Updating README.md{self.normal(False)}")
                 self.createReadme()
-                print(f'{self.cyan(False)}Pushing changes to remote repository{self.normal(False)}')
-                print(f'{self.cyan(False)}cd {self.repo_dir}{self.normal(False)}')
-                os.system(f'cd {self.repo_dir}')
-                print(f'{self.cyan(False)}git add .{self.normal(False)}')
-                os.system('git add .')
-                print(f'{self.cyan(False)}git commit -m "Add \'{p[p_index-1]}\' solution"{self.normal(False)}')
-                os.system(f'git commit -m "Add \'{p[p_index-1]}\' solution"')
-                print(f'{self.cyan(False)}git push origin main{self.normal(False)}')
-                os.system('git push origin main')
+                print()
+                print(
+                    f"{self.cyan(False)}Pushing changes to remote repository{self.normal(False)}"
+                )
+                print(
+                    f'{self.cyan(False)}git -C "{self.repo_dir}" add .{self.normal(False)}'
+                )
+                os.system(f'git -C "{self.repo_dir}" add .')
+                print()
+                print(
+                    f'{self.cyan(False)}git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"{self.normal(False)}'
+                )
+                os.system(
+                    f'git -C "{self.repo_dir}" commit -m "Add \'{p[p_index-1]}\' solution"'
+                )
+                print()
+                print(
+                    f'{self.cyan(False)}git -C "{self.repo_dir}" push origin main{self.normal(False)}'
+                )
+                os.system(f'git -C "{self.repo_dir}" push origin main')
                 print()
 
     def getSolvedProblemsByList(self, list_name):
@@ -455,10 +488,12 @@ class ProblemTracker:
             for problem in problems_lists:
                 if problem.lower() in self.solved_problems_set:
                     solved += 1
-        return {'solved':solved, 'total': total}
+        return {"solved": solved, "total": total}
 
     def displayReadme(self):
-        print(f"![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/{self.github_profile}/{self.github_repo})")
+        print(
+            f"![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/{self.github_profile}/{self.github_repo})"
+        )
         print()
         print("# LeetCodeProblems")
         print()
@@ -466,9 +501,11 @@ class ProblemTracker:
 
         # For each problem list get the solved and total count
         for list_name in self.problems_lists:
-            solved_count = self.getSolvedProblemsByList(list_name)['solved']
-            total_count = self.getSolvedProblemsByList(list_name)['total']
-            print(f"![](https://progress-bar.dev/{solved_count}/?scale={total_count}&suffix=/{total_count}) **{list_name}**")
+            solved_count = self.getSolvedProblemsByList(list_name)["solved"]
+            total_count = self.getSolvedProblemsByList(list_name)["total"]
+            print(
+                f"![](https://progress-bar.dev/{solved_count}/?scale={total_count}&suffix=/{total_count}) **{list_name}**"
+            )
             print()
         print("## Progress per list of problems")
         print()
@@ -478,7 +515,7 @@ class ProblemTracker:
         for list_name in self.problems_lists:
             print(f" {list_name} |", end="")
         print()
-        for i in range(len(self.problems_lists)+1):
+        for i in range(len(self.problems_lists) + 1):
             print(f"| :---:", end="")
         print(" |")
 
@@ -488,7 +525,7 @@ class ProblemTracker:
             # Replace characters that usually are replaced in links
             link = link.replace(" ", "%20")
             link = link.replace("&", "%26")
-            print(f"| ![{category}]({link}) |", end="")
+            print(f"| [{category}]({link}) |", end="")
 
             # Iterate over the lists of problems
             for list_name, problems_lst_list in self.problems_lists.items():
@@ -498,14 +535,21 @@ class ProblemTracker:
                     if sp in problems_lst_list.get(category, []):
                         counter += 1
                 total = len(problems_lst_list.get(category, []))
-                print(f" ![](https://progress-bar.dev/{counter}/?scale={total}&suffix=/{total}) |", end="")
+                print(
+                    f" ![](https://progress-bar.dev/{counter}/?scale={total}&suffix=/{total}) |",
+                    end="",
+                )
             print()
         print()
-        print("Made with ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)")
+        print(
+            "Made with [LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)"
+        )
 
     def createReadme(self):
-        with open(self.output_dir_path, 'w') as f:
-            f.write(f"![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/{self.github_profile}/{self.github_repo})\n")
+        with open(self.output_dir_path, "w") as f:
+            f.write(
+                f"![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/{self.github_profile}/{self.github_repo})\n"
+            )
             f.write("\n")
             f.write("# LeetCodeProblems\n")
             f.write("\n")
@@ -513,9 +557,11 @@ class ProblemTracker:
 
             # For each problem list get the solved and total count
             for list_name in self.problems_lists:
-                solved_count = self.getSolvedProblemsByList(list_name)['solved']
-                total_count = self.getSolvedProblemsByList(list_name)['total']
-                f.write(f"![](https://progress-bar.dev/{solved_count}/?scale={total_count}&suffix=/{total_count}) **{list_name}**\n")
+                solved_count = self.getSolvedProblemsByList(list_name)["solved"]
+                total_count = self.getSolvedProblemsByList(list_name)["total"]
+                f.write(
+                    f"![](https://progress-bar.dev/{solved_count}/?scale={total_count}&suffix=/{total_count}) **{list_name}**\n"
+                )
                 f.write("\n")
             f.write("## Progress per list of problems\n")
             f.write("\n")
@@ -525,7 +571,7 @@ class ProblemTracker:
             for list_name in self.problems_lists:
                 f.write(f" {list_name} |")
             f.write("\n")
-            for i in range(len(self.problems_lists)+1):
+            for i in range(len(self.problems_lists) + 1):
                 f.write(f"| :---:")
             f.write(" |\n")
 
@@ -535,7 +581,7 @@ class ProblemTracker:
                 # Replace characters that usually are replaced in links
                 link = link.replace(" ", "%20")
                 link = link.replace("&", "%26")
-                f.write(f"| ![{category}]({link}) |")
+                f.write(f"| [{category}]({link}) |")
 
                 # Iterate over the lists of problems
                 for list_name, problems_lst_list in self.problems_lists.items():
@@ -545,23 +591,27 @@ class ProblemTracker:
                         if sp in problems_lst_list.get(category, []):
                             counter += 1
                     total = len(problems_lst_list.get(category, []))
-                    f.write(f" ![](https://progress-bar.dev/{counter}/?scale={total}&suffix=/{total}) |")
+                    f.write(
+                        f" ![](https://progress-bar.dev/{counter}/?scale={total}&suffix=/{total}) |"
+                    )
                 f.write("\n")
             f.write("\n")
-            f.write("Made with ![LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)\n")
-            
+            f.write(
+                "Made with [LeetCode Progress Tracker](https://github.com/christopher-pedraza/leetcode-problem-tracker/)\n"
+            )
+
     def toggleAutoPush(self):
         if self.auto_push:
-            print(f'Set Auto Push to {self.red()}False{self.normal()}')
-            self.config.set('MISC', 'auto_push','FALSE')
+            print(f"Set Auto Push to {self.red()}False{self.normal()}")
+            self.config.set("MISC", "auto_push", "FALSE")
             self.auto_push = False
         else:
-            print(f'Set Auto Push to {self.green()}True{self.normal()}')
-            self.config.set('MISC', 'auto_push','TRUE')
+            print(f"Set Auto Push to {self.green()}True{self.normal()}")
+            self.config.set("MISC", "auto_push", "TRUE")
             self.auto_push = True
         print()
 
-        with open(self.config_dir_path, 'w') as configfile:
+        with open(self.config_dir_path, "w") as configfile:
             self.config.write(configfile)
 
 
@@ -578,21 +628,21 @@ while True:
     print("0. Exit")
 
     op = input("Option: ")
-    os.system('cls')
+    os.system("cls")
 
-    if op == '0':
+    if op == "0":
         break
-    elif op == '1':
+    elif op == "1":
         pt.markAsSolved()
-    elif op == '2':
+    elif op == "2":
         pt.markAsUnsolved()
-    elif op == '3':
+    elif op == "3":
         pt.createReadme()
-    elif op == '4':
+    elif op == "4":
         pt.displayAllProblems()
-    elif op == '5':
+    elif op == "5":
         pt.displaySolved()
-    elif op == '6':
+    elif op == "6":
         pt.displayReadme()
-    elif op == '7':
+    elif op == "7":
         pt.toggleAutoPush()
